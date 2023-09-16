@@ -6,8 +6,11 @@
 #include "ImGuiImplementation.h"
 #include "ImGuiModuleSettings.h"
 #include "ImGuiModule.h"
+
 #include "ImGuiCustomFontStyle0.h"
 #include "ImGuiCustomFontStyle1.h"
+#include "ImGuiCustomFontStyle2.h"
+
 #include "Utilities/WorldContext.h"
 #include "Utilities/WorldContextIndex.h"
 
@@ -276,6 +279,7 @@ void FImGuiContextManager::BuildFontAtlas(const TMap<FName, TSharedPtr<ImFontCon
 		FontAtlas.AddFontFromFileTTF(TCHAR_TO_ANSI(*Font),15,&FontConfig, FontAtlas.GetGlyphRangesChineseFull());
 		FontAtlas.AddFontFromMemoryTTF((void* )font_data, font_size, 15, &FontConfig, FontAtlas.GetGlyphRangesChineseFull());
 		FontAtlas.AddFontFromMemoryTTF((void* )Font0_data, Font0_size, 15, &FontConfig, FontAtlas.GetGlyphRangesChineseFull());
+		FontAtlas.AddFontFromMemoryTTF((void *)Style2_data, Style2_size, 15, &FontConfig, FontAtlas.GetGlyphRangesChineseFull());
 
 		// Build custom fonts
 		for (const TPair<FName, TSharedPtr<ImFontConfig>>& CustomFontPair : CustomFontConfigs)
@@ -296,7 +300,10 @@ void FImGuiContextManager::BuildFontAtlas(const TMap<FName, TSharedPtr<ImFontCon
 		int Width, Height, Bpp;
 		FontAtlas.GetTexDataAsRGBA32(&Pixels, &Width, &Height, &Bpp);
 
+
+
 		OnFontAtlasBuilt.Broadcast();
+
 	}
 }
 
