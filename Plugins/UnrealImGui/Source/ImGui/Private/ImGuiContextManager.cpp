@@ -6,10 +6,14 @@
 #include "ImGuiImplementation.h"
 #include "ImGuiModuleSettings.h"
 #include "ImGuiModule.h"
+#include "ImGuiCustomFontStyle0.h"
+#include "ImGuiCustomFontStyle1.h"
 #include "Utilities/WorldContext.h"
 #include "Utilities/WorldContextIndex.h"
 
 #include <imgui.h>
+
+#include "Kismet/BlueprintPathsLibrary.h"
 
 // MSVC warnings
 #ifdef _MSC_VER
@@ -266,6 +270,12 @@ void FImGuiContextManager::BuildFontAtlas(const TMap<FName, TSharedPtr<ImFontCon
 		ImFontConfig FontConfig = {};
 		FontConfig.SizePixels = FMath::RoundFromZero(13.f * DPIScale);
 		FontAtlas.AddFontDefault(&FontConfig);
+
+		//AddFont
+		const FString Font=UBlueprintPathsLibrary::EngineContentDir().Append("Slate/Fonts/Roboto-Regular.ttf").Replace(TEXT("/"),TEXT("\\"));
+		FontAtlas.AddFontFromFileTTF(TCHAR_TO_ANSI(*Font),15,&FontConfig, FontAtlas.GetGlyphRangesChineseFull());
+		FontAtlas.AddFontFromMemoryTTF((void* )font_data, font_size, 15, &FontConfig, FontAtlas.GetGlyphRangesChineseFull());
+		FontAtlas.AddFontFromMemoryTTF((void* )Font0_data, Font0_size, 15, &FontConfig, FontAtlas.GetGlyphRangesChineseFull());
 
 		// Build custom fonts
 		for (const TPair<FName, TSharedPtr<ImFontConfig>>& CustomFontPair : CustomFontConfigs)
